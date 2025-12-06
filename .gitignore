@@ -1,0 +1,19 @@
+# ===== Secrets & env =====
+.env
+
+# ===== Maven =====
+target/
+*.log
+
+# ===== Gradle =====
+build/
+.gradle/
+
+# ===== IDEs =====
+.idea/
+.vscode/
+*.iml
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
