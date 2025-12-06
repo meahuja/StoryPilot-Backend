@@ -31,9 +31,6 @@ public class FileUploadController {
     OpenAIService openAIService;
 
     @Autowired
-    FileUploadService fileUploadService;
-
-    @Autowired
     JiraServiceImpl jiraServiceImpl;
 
 
@@ -94,16 +91,16 @@ public class FileUploadController {
 
 
             // 3. Prepare DTO for DB logging
-            FileUploadDTO fileUploadDTO = new FileUploadDTO();
-            fileUploadDTO.setId(System.currentTimeMillis()); // Or use @GeneratedValue in entity
-            fileUploadDTO.setFileName(file.getOriginalFilename());
-            fileUploadDTO.setFileSize(file.getSize());
-            fileUploadDTO.setStatus("Success");
-            fileUploadDTO.setUploadedBy(uploadedBy != null ? uploadedBy : "system");
-            fileUploadDTO.setUploadedDate(new Date());
+//            FileUploadDTO fileUploadDTO = new FileUploadDTO();
+//            fileUploadDTO.setId(System.currentTimeMillis()); // Or use @GeneratedValue in entity
+//            fileUploadDTO.setFileName(file.getOriginalFilename());
+//            fileUploadDTO.setFileSize(file.getSize());
+//            fileUploadDTO.setStatus("Success");
+//            fileUploadDTO.setUploadedBy(uploadedBy != null ? uploadedBy : "system");
+//            fileUploadDTO.setUploadedDate(new Date());
 
             // 4. Save to DB
-            FileUploadDTO saved = fileUploadService.saveFile(fileUploadDTO);
+            //FileUploadDTO saved = fileUploadService.saveFile(fileUploadDTO);
 
             // 5. Log success
             //log.info("File [{}] uploaded successfully by [{}], size={} bytes", saved.getFileName(), saved.getUploadedBy(), saved.getFileSize());
@@ -113,36 +110,17 @@ public class FileUploadController {
             // log.error("File upload failed: {}", file.getOriginalFilename(), e);
 
             // Save failed attempt as well
-            FileUploadDTO dto = new FileUploadDTO();
-            dto.setId(System.currentTimeMillis());
-            dto.setFileName(file.getOriginalFilename());
-            dto.setFileSize(file.getSize());
-            dto.setStatus("Failed");
-            dto.setUploadedBy(uploadedBy != null ? uploadedBy : "system");
-            dto.setUploadedDate(new Date());
-            fileUploadService.saveFile(dto);
+//            FileUploadDTO dto = new FileUploadDTO();
+//            dto.setId(System.currentTimeMillis());
+//            dto.setFileName(file.getOriginalFilename());
+//            dto.setFileSize(file.getSize());
+//            dto.setStatus("Failed");
+//            dto.setUploadedBy(uploadedBy != null ? uploadedBy : "system");
+//            dto.setUploadedDate(new Date());
+//            fileUploadService.saveFile(dto);
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FileUploadDTO> getFile(@PathVariable Long id) {
-        return ResponseEntity.ok(fileUploadService.getFileById(id));
-    }
 
-    @GetMapping("/all-files")
-    public ResponseEntity<List<FileUploadDTO>> getAllFiles() {
-        return ResponseEntity.ok(fileUploadService.getAllFiles());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<FileUploadDTO> updateFile(@PathVariable Long id, @RequestBody FileUploadDTO dto) {
-        return ResponseEntity.ok(fileUploadService.updateFile(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFile(@PathVariable Long id) {
-        fileUploadService.deleteFile(id);
-        return ResponseEntity.noContent().build();
-    }
 }
